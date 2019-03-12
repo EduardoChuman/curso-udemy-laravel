@@ -20,8 +20,10 @@
                     <td>{{$cat->id}}</td>
                     <td>{{$cat->nome}}</td>
                     <td>
-                        <a href="/cadastro-produtos-inicial/public/categorias/editar/{{$cat->id}}" class="btn btn-sm btn-primary">Editar</a>
-                        <a href="/cadastro-produtos-inicial/public/categorias/apagar/{{$cat->id}}" class="btn btn-sm btn-danger">Apagar</a>
+                        <a href="categorias/editar/{{$cat->id}}" class="btn btn-sm btn-primary">Editar</a>
+                        <a href="categorias/apagar/{{$cat->id}}" class="btn btn-sm btn-danger">Apagar</a>
+                        <!-- <a href="/cadastro-produtos-inicial/public/categorias/editar/{{$cat->id}}" class="btn btn-sm btn-primary">Editar</a>
+                        <a href="/cadastro-produtos-inicial/public/categorias/apagar/{{$cat->id}}" class="btn btn-sm btn-danger">Apagar</a> -->
                     </td>
                 </tr>
     @endforeach                
@@ -30,7 +32,8 @@
 @endif        
     </div>
     <div class="card-footer">
-        <a href="/cadastro-produtos-inicial/public/categorias/novo" class="btn btn-sm btn-primary" role="button">Nova categoria</a>
+        <a href="categorias/novo" class="btn btn-sm btn-primary" role="button">Nova categoria</a>
+        <!-- <a href="/cadastro-produtos-inicial/public/categorias/novo" class="btn btn-sm btn-primary" role="button">Nova categoria</a> -->
     </div>
 </div>
 
