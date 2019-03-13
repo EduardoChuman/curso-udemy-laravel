@@ -4,7 +4,7 @@
     <div class="card border">
         <div class="card-body">
             <h5 class="card-title">Cadastro de Produtos</h5>
-            <table class="table table-ordered table-hover">
+            <table class="table table-ordered table-hover" id='tabelaProdutos'>
                 <thead>
                     <tr>
                         <th>Código</th>
@@ -70,6 +70,12 @@
 
 @section('javascript')
     <script type="text/javascript">
+        $(document).ready(function() 
+        {
+            carregarCategorias();
+            carregaProdutos();
+        });
+
         function novoProduto()
         {
             $('#id').val('');
@@ -83,20 +89,44 @@
         {
             $.getJSON('/api/categorias', function(json)
             { 
-                console.log(json); 
-                opcao = '';
-                // $.each(json, function(id,nome)
-                // {       
-                //     opcao += "<option value='" + json[i].id + "'>" + json[i].nome + "</option>";
-                // });
-                opcao = '<option disabled selected value>Selecione a categoria</option>'; // + opcao;
-                $('#departamentoProduto').html(opcao);
+                // console.log(json); 
+                var opcao = '';
+                for(i = 0; i < json.length; i++)
+                {       
+                    opcao += "<option value='" + json[i].id + "'>" + json[i].nome + "</option>";                
+                }
+                opcao = '<option disabled selected value>Selecione a categoria</option>' + opcao;
+                $('#departamentoProduto').append(opcao);
             });
         }
-        $(function() 
-        {
-            carregarCategorias();
-        });
 
+        function carregaProdutos()
+        {
+            $.getJSON('api/produtos', function(json)
+            {
+                for(i = 0; i < json.length; i++)
+                {
+                    // console.log(json[i]);
+                    linha = montaLinhaTabelaProdutos(json[i]);
+                    $('#tabelaProdutos').append(linha);
+                }              
+            });
+        }
+
+        function montaLinhaTabelaProdutos(json)
+        {
+            linha = '<tr>' +
+                        '<td>' + json.id + '</td>' +
+                        '<td>' + json.nome + '</td>' +
+                        '<td>' + json.estoque + '</td>' +
+                        '<td>' + json.preco + '</td>' +
+                        '<td>' + json.categoria_id + '</td>' +
+                        '<td>' + 
+                            '<button class="btn btn-sm btn-primary">Editar</button> ' + 
+                            '<button class="btn btn-sm btn-danger">Apagar</button>' + 
+                        '</td>' +
+                    '</tr>';
+            return linha;
+        }
     </script>
 @endsection
