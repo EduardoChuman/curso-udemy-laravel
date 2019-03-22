@@ -26,7 +26,7 @@
     <div class="modal" tabindex="-1" role="dialog" id="dlgModalProdutos">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="" method="post" class="form-horizontal"id="formProdutos">
+                <form method="post" class="form-horizontal" id="formProdutos">
                     <div class="modal-header">
                         <h5 class="modal-title">Novo Produto</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -69,64 +69,5 @@
 @endsection
 
 @section('javascript')
-    <script type="text/javascript">
-        $(document).ready(function() 
-        {
-            carregarCategorias();
-            carregaProdutos();
-        });
-
-        function novoProduto()
-        {
-            $('#id').val('');
-            $('#precoProduto').val('');
-            $('#nomeProduto').val('');
-            $('#quantidadeProduto').val('');
-            $('#dlgModalProdutos').modal('show');
-        }
-
-        function carregarCategorias()
-        {
-            $.getJSON('/api/categorias', function(json)
-            { 
-                // console.log(json); 
-                var opcao = '';
-                for(i = 0; i < json.length; i++)
-                {       
-                    opcao += "<option value='" + json[i].id + "'>" + json[i].nome + "</option>";                
-                }
-                opcao = '<option disabled selected value>Selecione a categoria</option>' + opcao;
-                $('#departamentoProduto').append(opcao);
-            });
-        }
-
-        function carregaProdutos()
-        {
-            $.getJSON('api/produtos', function(json)
-            {
-                for(i = 0; i < json.length; i++)
-                {
-                    // console.log(json[i]);
-                    linha = montaLinhaTabelaProdutos(json[i]);
-                    $('#tabelaProdutos').append(linha);
-                }              
-            });
-        }
-
-        function montaLinhaTabelaProdutos(json)
-        {
-            linha = '<tr>' +
-                        '<td>' + json.id + '</td>' +
-                        '<td>' + json.nome + '</td>' +
-                        '<td>' + json.estoque + '</td>' +
-                        '<td>' + json.preco + '</td>' +
-                        '<td>' + json.categoria_id + '</td>' +
-                        '<td>' + 
-                            '<button class="btn btn-sm btn-primary">Editar</button> ' + 
-                            '<button class="btn btn-sm btn-danger">Apagar</button>' + 
-                        '</td>' +
-                    '</tr>';
-            return linha;
-        }
-    </script>
+    <script type="text/javascript" src="{{ asset('js/produtos.js')}}"></script>
 @endsection

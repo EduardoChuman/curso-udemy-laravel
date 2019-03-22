@@ -38,9 +38,13 @@ class ControladorCategoria extends Controller
     public function store(Request $request)
     {
         $cat = new Categoria();
-        $cat->nome = $request->input('nomeCategoria');
-        $cat->save();
-        return redirect('/categorias');
+        if ($request->input('nomeCategoria') != null) {
+            $cat->nome = $request->input('nomeCategoria');
+            $cat->save();
+            return redirect('/categorias');
+        } else {
+            return redirect('/categorias');
+        }
     }
 
     /**
