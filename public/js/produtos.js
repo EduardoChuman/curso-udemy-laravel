@@ -64,8 +64,11 @@ function montaLinhaTabelaProdutos(json)
 
 $('#formProdutos').submit(function(event){
     event.preventDefault(); 
-    carregaDadosProdutos();
-    // console.log('funcionou');
+    if ($('#id').val() != '') {
+        atualizaDadosProduto();
+    } else {
+        carregaDadosProdutos();
+    }
     $('#dlgModalProdutos').modal('hide');
 });
 
@@ -82,7 +85,61 @@ function carregaDadosProdutos()
         linha = montaLinhaTabelaProdutos(produto);
         $('#tabelaProdutos>tbody').append(linha);
     });
-    // console.log(prod);
+}
+
+function atualizaDadosProduto()
+{
+    prod = {
+        id: $('#id').val(),
+        nome: $('#nomeProduto').val(),
+        preco: $('#precoProduto').val(),
+        estoque: $('#quantidadeProduto').val(),
+        categoria_id: $('#departamentoProduto').val()
+    };
+    $.ajax({
+        type: 'PATCH',
+        url: '/api/produtos/' + prod.id,
+        context: this,
+        data: prod,
+        success: function(prod){
+            produto = JSON.parse(prod);
+            linhas = $('#tabelaProdutos>tbody>tr');
+            registroTabela = linhas.filter(function(i, element){
+                return (element.cells[0].textContent == produto.id)
+            })
+            if (registroTabela) {
+                registroTabela[0].cells[0].textContent = produto.id;
+                registroTabela[0].cells[1].textContent = produto.nome;
+                registroTabela[0].cells[2].textContent = produto.estoque;
+                registroTabela[0].cells[3].textContent = produto.preco;
+                registroTabela[0].cells[4].textContent = produto.categoria_id;
+            }
+        },
+        error: function(error){
+            console.log(error);
+        }
+    });
+}
+
+function editarProduto(id)
+{
+    $.ajax({
+        type: 'GET',
+        url: '/api/produtos/' + id,
+        context: this,
+        success: function(prod){
+            produto = JSON.parse(prod);
+            $('#id').val(produto.id);
+            $('#precoProduto').val(produto.preco);
+            $('#nomeProduto').val(produto.nome);
+            $('#quantidadeProduto').val(produto.estoque);
+            $('#departamentoProduto').val(produto.categoria_id);
+            $('#dlgModalProdutos').modal('show');
+        },
+        error: function(error){
+            console.log(error);
+        }
+    });
 }
 
 function removerProduto(id)
